@@ -1,0 +1,3348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贝壳新房搏学考试系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(13, 71, 161, 0.15);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjA1KSIgLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybikiIC8+PC9zdmc+');
+            opacity: 0.3;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 2;
+        }
+        
+        .logo-icon {
+            background: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-icon i {
+            color: #0d47a1;
+            font-size: 28px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .logo-text p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2;
+        }
+        
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .login-section, .exam-section, .result-section {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .login-form {
+            max-width: 480px;
+            margin: 30px auto;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+        }
+        
+        .login-form h2 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #37474f;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group label i {
+            color: #1e88e5;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #90a4ae;
+            font-size: 18px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus {
+            border-color: #1e88e5;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(30, 136, 229, 0.15);
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::after {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(30, 136, 229, 0.4);
+        }
+        
+        .demo-account {
+            text-align: center;
+            margin-top: 25px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+        /* 免责声明样式 */
+.disclaimer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff8e1;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #5d4037;
+    border-left: 4px solid #ffc107;
+}
+
+.disclaimer i {
+    color: #ff9800;
+    margin-right: 5px;
+}
+        
+        .demo-account strong {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+        
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+        
+        .exam-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .exam-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+        
+        .timer {
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            color: white;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(30, 136, 229, 0.08);
+            border: 1px solid #e3f2fd;
+            position: relative;
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .question-number {
+            background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            min-width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 15px;
+            box-shadow: 0 4px 8px rgba(30, 136, 229, 0.2);
+        }
+        
+        .question-text {
+            font-size: 19px;
+            font-weight: 600;
+            color: #263238;
+            line-height: 1.6;
+            flex: 1;
+        }
+        
+        .options {
+            padding-left: 55px;
+        }
+        
+        .option {
+            margin: 15px 0;
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: #f0f7ff;
+            border-color: #90caf9;
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            background-color: #e3f2fd;
+            border-color: #1e88e5;
+            box-shadow: 0 4px 10px rgba(30, 136, 229, 0.15);
+        }
+        
+        .option input {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .prev-btn {
+            background-color: #f5f5f5;
+            color: #424242;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .prev-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .next-btn {
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            border: none;
+        }
+        
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(30, 136, 229, 0.4);
+        }
+        
+        .submit-btn {
+            display: block;
+            margin: 40px auto;
+            padding: 16px 50px;
+            background: linear-gradient(90deg, #43a047 0%, #2e7d32 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(67, 160, 71, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 160, 71, 0.4);
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            background: conic-gradient(#4caf50 0% 70%, #ff9800 70% 85%, #f44336 85% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .score-inner {
+            width: 160px;
+            height: 160px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .score-value {
+            font-size: 48px;
+            color: #1e88e5;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .score-text {
+            font-size: 18px;
+            color: #757575;
+            margin-top: 5px;
+        }
+        
+        .result-details {
+            margin-top: 30px;
+        }
+        
+        .result-title {
+            font-size: 28px;
+            color: #0d47a1;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .result-subtitle {
+            color: #546e7a;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+        
+        .detail-cards {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .detail-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            min-width: 220px;
+            box-shadow: 0 8px 25px rgba(30, 136, 229, 0.1);
+            border: 1px solid #e3f2fd;
+            transition: all 0.3s;
+        }
+        
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(30, 136, 229, 0.15);
+        }
+        
+        .detail-card h3 {
+            color: #0d47a1;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .detail-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1e88e5;
+            line-height: 1.2;
+        }
+        
+        .detail-label {
+            font-size: 15px;
+            color: #78909c;
+            margin-top: 5px;
+        }
+        
+        .wrong-questions {
+            margin-top: 50px;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .section-title {
+            color: #0d47a1;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .wrong-question-item {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 18px rgba(244, 67, 54, 0.08);
+            border: 1px solid #ffebee;
+            position: relative;
+        }
+        
+        .wrong-question-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #f44336, #e91e63);
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #263238;
+        }
+        
+        .user-answer {
+            color: #f44336;
+            margin: 8px 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .correct-answer {
+            color: #4caf50;
+            font-weight: 600;
+            margin: 8px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .explanation {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border-left: 4px solid #1e88e5;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .explanation strong {
+            color: #0d47a1;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #546e7a;
+            font-size: 15px;
+            border-top: 1px solid #e3f2fd;
+            background: #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .login-form {
+                padding: 30px 20px;
+            }
+            
+            .exam-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .exam-info {
+                width: 100%;
+            }
+            
+            .progress-bar {
+                max-width: 100%;
+            }
+            
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .question-number {
+                margin-bottom: 15px;
+            }
+            
+            .options {
+                padding-left: 0;
+            }
+            
+            .detail-cards {
+                gap: 15px;
+            }
+            
+            .detail-card {
+                min-width: 100%;
+            }
+        }
+        
+        /* 分享提示 */
+        .share-guide {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: center;
+            border-left: 4px solid #1e88e5;
+        }
+        
+        .share-guide h3 {
+            color: #0d47a1;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .share-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            background: white;
+            border: 2px solid #1e88e5;
+            border-radius: 8px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .share-btn:hover {
+            background: #1e88e5;
+            color: white;
+        }
+        
+        /* 使用帮助 */
+        .help-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .help-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close-help {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #757575;
+        }
+        
+        .help-steps {
+            margin: 20px 0;
+        }
+        
+        .help-step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: #1e88e5;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-overlay"></div>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>贝壳新房搏学考试系统</h1>
+                    <p>第1届新房搏学考试辅导教材</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div id="userName">未登录</div>
+            </div>
+        </header>
+        
+        <div class="content">
+            <!-- 分享指南 -->
+            <div class="share-guide">
+                <h3><i class="fas fa-share-alt"></i> 如何分享此考试系统</h3>
+                <p>将此HTML文件分享给他人后，请确保他们按以下方式打开：</p>
+                <div class="share-options">
+                    <button class="share-btn" id="copyLinkBtn">
+                        <i class="fas fa-copy"></i> 复制文件分享指南
+                    </button>
+                    <button class="share-btn" id="showHelpBtn">
+                        <i class="fas fa-question-circle"></i> 查看使用帮助
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 登录界面 -->
+            <div class="login-section active" id="loginSection">
+                <div class="login-form">
+                    <h2><i class="fas fa-key"></i> 用户登录</h2>
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> 用户名</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user-circle"></i>
+                            <input type="text" id="username" placeholder="请输入用户名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> 密码</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-key"></i>
+                            <input type="password" id="password" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <button class="btn" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> 登录系统
+                    </button>
+                    
+                    <div class="demo-account">
+                        <p>演示账号: <strong>syh</strong> / 密码: <strong>123</strong></p>
+                        <p style="margin-top: 8px; color: #0d47a1; font-weight: 500;">
+                            <i class="fas fa-lightbulb"></i> 登录后可开始模拟考试
+                        </p>
+                    </div>
+                </div>
+            </div>
+                     <div class="disclaimer">
+                 <p><i class="fas fa-exclamation-triangle"></i> 免责声明：本考试系统由孙永恒免费提供培训使用，题目及答案来源于《第1届新房搏学考试辅导教材》。系统内所有内容仅供学习参考，不构成任何业务建议。使用本系统即表示您同意仅用于个人学习目的。</p>
+             </div>
+            
+            <!-- 考试界面 -->
+            <div class="exam-section" id="examSection">
+                <div class="exam-header">
+                    <div class="exam-info">
+                        <div class="exam-title">
+                            <i class="fas fa-book-open"></i> 第1届新房搏学考试
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progressBar" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div class="timer" id="timer">
+                        <i class="fas fa-clock"></i> 剩余时间: 60:00
+                    </div>
+                </div>
+                
+                <div id="questionArea">
+                    <!-- 题目将动态生成在这里 -->
+                </div>
+                
+                <button class="submit-btn" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> 提交试卷
+                </button>
+            </div>
+            
+            <!-- 成绩界面 -->
+            <div class="result-section" id="resultSection">
+                <div class="result-container">
+                    <div class="score-circle">
+                        <div class="score-inner">
+                            <div class="score-value" id="scoreValue">0</div>
+                            <div class="score-text">得分</div>
+                        </div>
+                    </div>
+                    
+                    <h2 class="result-title">考试成绩报告</h2>
+                    <p class="result-subtitle">
+                        恭喜您完成贝壳新房搏学考试！以下是您的考试成绩和详细分析报告
+                    </p>
+                    
+                    <div class="result-details">
+                        <div class="detail-cards">
+                            <div class="detail-card">
+                                <h3><i class="fas fa-file-alt"></i> 答题数</h3>
+                                <div class="detail-value" id="totalQuestions">0</div>
+                                <div class="detail-label">总题数</div>
+                            </div>
+                            <div class="detail-card">
+                                <h3><i class="fas fa-check-circle"></i> 正确数</h3>
+                                <div class="detail-value" id="correctCount">0</div>
+                                <div class="detail-label">答对题目</div>
+                            </div>
+                            <div class="detail-card">
+                                <h3><i class="fas fa-times-circle"></i> 错误数</h3>
+                                <div class="detail-value" id="wrongCount">0</div>
+                                <div class="detail-label">答错题目</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wrong-questions">
+                        <h2 class="section-title">
+                            <i class="fas fa-exclamation-triangle"></i> 错题解析
+                        </h2>
+                        <div id="wrongQuestionsList">
+                            <!-- 错题将动态生成在这里 -->
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="retryBtn" style="margin-top: 30px; width: auto; padding: 14px 40px;">
+                        <i class="fas fa-redo"></i> 重新考试
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>贝壳找房 &copy; 2025 第1届新房搏学考试辅导教材</p>
+            <p style="margin-top: 8px;">科技驱动的一站式新居住服务平台</p>
+        </footer>
+    </div>
+    
+    <!-- 使用帮助弹窗 -->
+    <div class="help-modal" id="helpModal">
+        <div class="help-content">
+            <span class="close-help" id="closeHelp">&times;</span>
+            <h2><i class="fas fa-question-circle"></i> 使用与分享指南</h2>
+            
+            <div class="help-steps">
+                <div class="help-step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>保存HTML文件</h3>
+                        <p>将此HTML文件保存到您的设备（电脑或手机）</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>分享文件</h3>
+                        <p>通过以下方式分享给他人：<br>
+                        - 电脑：通过邮件、微信、QQ发送文件<br>
+                        - 手机：通过微信、QQ、钉钉发送文件</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>打开方式</h3>
+                        <p>接收者需要：<br>
+                        - 电脑：双击HTML文件或在浏览器中打开<br>
+                        - 手机：在文件管理器中点击HTML文件，选择用浏览器打开</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h3>使用考试系统</h3>
+                        <p>使用演示账号登录：<br>
+                        <strong>用户名: syh</strong><br>
+                        <strong>密码: 123</strong></p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn" id="copyGuideBtn" style="margin-top: 10px;">
+                <i class="fas fa-copy"></i> 复制分享指南
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 题库数据
+        const questionBank = [
+            {
+                id: 1,
+                type: 'single',
+                question: '贝壳的使命是什么？',
+                options: [
+                    'A. 有尊严的服务者，更美好的居住',
+                    'B. 让家更美好',
+                    'C. 服务3亿家庭的品质居住平台',
+                    'D. 做难而正确的事'
+                ],
+                answer: 'A',
+                explanation: '根据教材P11，贝壳的使命是"有尊严的服务者，更美好的居住"。'
+            },
+            {
+                id: 2,
+                type: 'multi',
+                question: '贝壳的核心价值观包括哪些？',
+                options: [
+                    'A. 客户至上',
+                    'B. 诚实可信',
+                    'C. 合作共赢',
+                    'D. 拼搏进取',
+                    'E. 品质正循环'
+                ],
+                answer: ['A', 'B', 'C', 'D'],
+                explanation: '根据教材P11，贝壳的核心价值观包括：客户至上、诚实可信、合作共赢、拼搏进取。'
+            },
+            {
+                id: 3,
+                type: 'judge',
+                question: '格林互助的保障对象包括员工本人、配偶、子女、父母及配偶的父母。',
+                answer: true,
+                explanation: '根据教材P13，格林互助的保障对象包括本人、配偶、子女、父母及配偶的父母。'
+            },
+            {
+                id: 4,
+                type: 'single',
+                question: '房地产行业按交易客体的存续时间可分为？',
+                options: [
+                    'A. 土地市场和商品房市场',
+                    'B. 销售市场和租赁市场',
+                    'C. 增量市场和存量市场',
+                    'D. 一级市场和二级市场'
+                ],
+                answer: 'C',
+                explanation: '根据教材P20，房地产市场按交易客体的存续时间可分为增量市场和存量市场。'
+            },
+            {
+                id: 5,
+                type: 'single',
+                question: '商品房预售应具备的条件中，以下哪项不属于"五证"？',
+                options: [
+                    'A. 国有土地使用证',
+                    'B. 建设工程规划许可证',
+                    'C. 商品房预售许可证',
+                    'D. 施工进度许可证'
+                ],
+                answer: 'D',
+                explanation: '根据教材P25，商品房预售应具备"五证"包括：国有土地使用证、建设用地规划许可证、建设工程规划许可证、建筑工程施工许可证、商品房预售许可证。'
+            },
+            {
+                id: 6,
+                type: 'multi',
+                question: '贝壳新房业务流程主要包括哪些阶段？',
+                options: [
+                    'A. 拓盘',
+                    'B. 打盘',
+                    'C. 回款结佣',
+                    'D. 客户开发',
+                    'E. 广告投放'
+                ],
+                answer: ['A', 'B', 'C'],
+                explanation: '根据教材P34，新房业务主要分为拓盘、打盘、回款结佣三个阶段。'
+            },
+            {
+                id: 7,
+                type: 'single',
+                question: '新房行指（行业指数）的计算公式是？',
+                options: [
+                    'A. 贝壳月度财务成销套数/城市新房市场月度网签总套数',
+                    'B. 新房成交金额/城市总成交金额',
+                    'C. 贝壳新房销售额/开发商总销售额',
+                    'D. 渠道带看量/总带看量'
+                ],
+                answer: 'A',
+                explanation: '根据教材P77，月度新房行业指数（成销行指）=贝壳月度财务成销套数/城市新房市场月度网签总套数。'
+            },
+            {
+                id: 8,
+                type: 'judge',
+                question: '梯户比是指电梯数和每层楼住户数的比例，表达为"几梯几户"。',
+                answer: true,
+                explanation: '根据教材P30，梯户比是电梯数和每层楼住户数的比例，表达为"几梯几户"。'
+            },
+            {
+                id: 9,
+                type: 'single',
+                question: '下列哪项不属于贝壳"新房十不准"中对消费者的要求？',
+                options: [
+                    'A. 不准对消费者提供虚假信息',
+                    'B. 不准向消费者建议加杠杆金融产品',
+                    'C. 不准经手/侵占/挪用消费者资金',
+                    'D. 不准向消费者赠送礼品'
+                ],
+                answer: 'D',
+                explanation: '根据教材P17-18，贝壳员工新房十不准中对消费者的要求包括：不准提供虚假信息、不准建议加杠杆金融产品、不准经手消费者资金。'
+            },
+            {
+                id: 10,
+                type: 'multi',
+                question: '贝壳新房业务优势包括哪些？',
+                options: [
+                    'A. 平台模式优势',
+                    'B. 资源整合优势',
+                    'C. 营销服一体化运营优势',
+                    'D. 价格最低优势',
+                    'E. 独家房源优势'
+                ],
+                answer: ['A', 'B', 'C'],
+                explanation: '根据教材P35，贝壳新房业务优势包括：平台模式优势、资源整合优势、营销服一体化运营优势。'
+            },
+            {
+                id: 11,
+                type: 'single',
+                question: '2023年贝壳将战略升级为？',
+                options: [
+                    'A. 一体两翼',
+                    'B. 一体三翼',
+                    'C. 双轮驱动',
+                    'D. 平台+生态'
+                ],
+                answer: 'B',
+                explanation: '根据教材P33，2023年贝壳将战略升级为"一体三翼"。'
+            },
+            {
+                id: 12,
+                type: 'judge',
+                question: '现房销售需要提供《商品房预售许可证》。',
+                answer: false,
+                explanation: '根据教材P25，现房销售需要提供《商品房销售许可证》，预售房才需要提供《商品房预售许可证》。'
+            },
+            {
+                id: 13,
+                type: 'single',
+                question: '贝壳的使命是什么？',
+                options: [
+                    'A. 有尊严的服务者，更美好的居住',
+                    'B. 让家更美好',
+                    'C. 服务3亿家庭的品质居住平台',
+                    'D. 做难而正确的事'
+                ],
+                answer: 'A',
+                explanation: '根据教材P11，贝壳的使命是"有尊严的服务者，更美好的居住"。'
+            },
+            {
+        id: 14,
+        type: 'single',
+        question: '链家成立初期（2001-2004年）的核心竞争策略是什么？',
+        options: [
+            'A. 低价佣金策略',
+            'B. 快速扩张门店',
+            'C. 诚实不骗人',
+            'D. 独家房源垄断'
+        ],
+        answer: 'C',
+        explanation: '教材P1明确提到：成立初期的链家坚持"诚实就是我们的竞争策略，不骗人就是竞争力"'
+    },
+    {
+        id: 15,
+        type: 'multi',
+        question: '链家在"深耕北京"阶段（2005-2007）取得成功的关键因素包括：',
+        options: [
+            'A. 分区裂变模式',
+            'B. 刚性管理制度',
+            'C. 高佣金策略',
+            'D. 追求卓越的文化'
+        ],
+        answer: ['A', 'B', 'D'],
+        explanation: '教材P1-2指出成功因素包括：分区裂变、刚性管理、追求卓越追求赢'
+    },
+    {
+        id: 16,
+        type: 'judge',
+        question: '链家于2011年推出的"博学考试"目的是通过考试促进经纪人专业能力提升。',
+        answer: true,
+        explanation: '教材P3明确说明：2011年链家推出"以考促学"的博学考试来提升专业能力'
+    },
+    {
+        id: 17,
+        type: 'single',
+        question: '贝壳将每年的哪一天定为"客户日"？',
+        options: [
+            'A. 1月1日',
+            'B. 2月23日',
+            'C. 5月1日',
+            'D. 11月12日'
+        ],
+        answer: 'B',
+        explanation: '教材P4记载：2016年2月23日的客户投诉事件后，贝壳将每年2月23日定为客户日'
+    },
+    {
+        id: 18,
+        type: 'multi',
+        question: '贝壳"守文化"针对门店侧的"1+5个2"战略体系包含哪些要素？',
+        options: [
+            'A. 区域共治理事务',
+            'B. 门店积分制',
+            'C. 店东工作台',
+            'D. 精英社竞赛'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P4-6完整列出"1+5个2"体系：1个组织+2机制+2公示+2承诺+2产品+2竞赛'
+    },
+    {
+        id: 19,
+        type: 'single',
+        question: '门店积分制的核心业务逻辑是什么？',
+        options: [
+            'A. 积分决定收入，收入决定星级',
+            'B. 收入决定积分，积分决定星级',
+            'C. 星级决定积分，积分决定收入',
+            'D. 规模决定积分，积分决定收入'
+        ],
+        answer: 'B',
+        explanation: '教材P5明确指出："收入决定积分，积分决定星级，星级和积分共同决定权益"'
+    },
+    {
+        id: 20,
+        type: 'judge',
+        question: '贝壳2024年推出的"标准都做到，房款平台保"承诺要求经纪人严格规范作业。',
+        answer: true,
+        explanation: '教材P5风险兜底承诺条款：经纪人严格规范作业是获得平台资金保障的前提条件'
+    },
+    {
+        id: 21,
+        type: 'single',
+        question: '店东看懂账主要解决店东的什么痛点？',
+        options: [
+            'A. 房源获取困难',
+            'B. 交易后对账困难',
+            'C. 人员招聘困难',
+            'D. 客户投诉处理'
+        ],
+        answer: 'B',
+        explanation: '教材P5明确说明：针对"找不到、对不上、看不懂"等交易后财务痛点'
+    },
+    {
+        id: 22,
+        type: 'multi',
+        question: '贝壳城市的促增长主要包括哪些方向？',
+        options: [
+            'A. 行指增长',
+            'B. 规模增长',
+            'C. 广告投入增长',
+            'D. 新赛道增长'
+        ],
+        answer: ['A', 'B', 'D'],
+        explanation: '教材P5-6指出促增长的四个方向：行指增长、规模增长、效率增长和新赛道增长'
+    },
+    {
+        id: 23,
+        type: 'single',
+        question: '2023年贝壳战略升级后的结构是？',
+        options: [
+            'A. 一体两翼',
+            'B. 一体三翼',
+            'C. 双轮驱动',
+            'D. 平台+生态'
+        ],
+        answer: 'B',
+        explanation: '教材P4明确：2023年贝壳将战略升级为"一体三翼"'
+    },
+    {
+        id: 24,
+        type: 'judge',
+        question: '贝壳整装业务包含圣都整装和被窝整装两大品牌。',
+        answer: true,
+        explanation: '教材P6说明：整装品牌包含圣都整装（全国）和被窝整装（北京）'
+    },
+    {
+        id: 25,
+        type: 'single',
+        question: '链家首次成为北京市场第一的时间是？',
+        options: [
+            'A. 2005年',
+            'B. 2007年',
+            'C. 2010年',
+            'D. 2013年'
+        ],
+        answer: 'B',
+        explanation: '教材P1：链家在2007年成为北京市市场第一'
+    },
+    {
+        id: 26,
+        type: 'multi',
+        question: '透明交易包含哪些具体措施？',
+        options: [
+            'A. 实体报盘',
+            'B. 签三方约',
+            'C. 不吃差价',
+            'D. 快速成交'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P1：透明交易即"实体报盘、签三方约、不吃差价"三要素'
+    },
+    {
+        id: 27,
+        type: 'single',
+        question: '链家推行真房源后，委托量短期下降幅度约为？',
+        options: [
+            'A. 5%',
+            'B. 15%',
+            'C. 30%',
+            'D. 50%'
+        ],
+        answer: 'C',
+        explanation: '教材P3：推行真房源的前3个月，链家的委托量下降了30%左右'
+    },
+    {
+        id: 28,
+        type: 'judge',
+        question: '楼盘字典项目启动于2008年金融危期间。',
+        answer: false,
+        explanation: '教材P2：链家在2007年底着手开发楼盘字典项目'
+    },
+    {
+        id: 29,
+        type: 'single',
+        question: '贝壳对运营团队的职业要求是？',
+        options: [
+            'A. 十不准',
+            'B. 十二不准',
+            'C. 十五不准',
+            'D. 二十不准'
+        ],
+        answer: 'B',
+        explanation: '教材P5：贝壳对运营团队有"十二不准"的行为准则'
+    },
+    {
+        id: 30,
+        type: 'multi',
+        question: '品质重塑围绕的三大方向是？',
+        options: [
+            'A. 建立标准化',
+            'B. 推动线上化',
+            'C. 实现数据化',
+            'D. 扩大规模化'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P3：品质重塑围绕"标准化、线上化、数据化"三方面'
+    },
+    {
+        id: 31,
+        type: 'single',
+        question: '赢亲情活动表彰的优秀服务者数量是？',
+        options: [
+            'A. 1000位',
+            'B. 2000位',
+            'C. 3000位',
+            'D. 5000位'
+        ],
+        answer: 'B',
+        explanation: '教材P6：2024年赢亲情活动表彰2000位优秀服务者'
+    },
+    {
+        id: 32,
+        type: 'judge',
+        question: 'ACN合作网络雏形源于2015年管理合作单边比变革。',
+        answer: true,
+        explanation: '教材P4：2015年链家进行管理合作单边比变革（即ACN雏形）'
+    },
+    {
+        id: 33,
+        type: 'single',
+        question: '贝壳找房在港交所上市的时间是？',
+        options: [
+            'A. 2018年',
+            'B. 2020年',
+            'C. 2021年',
+            'D. 2022年'
+        ],
+        answer: 'D',
+        explanation: '教材P4：2022年贝壳找房在香港港交所上市'
+    },
+    // 第21-50题
+    {
+        id: 34,
+        type: 'multi',
+        question: '科学管理阶段（2008-2010）的战略重点包括：',
+        options: [
+            'A. 提高店均效率',
+            'B. 提高人均效率',
+            'C. 解决内部管理语言一致性',
+            'D. 扩大市场份额'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P2：此阶段战略重点是提高店均和人均效率，解决内部管理语言一致性问题'
+    },
+    {
+        id: 35,
+        type: 'single',
+        question: '链家在线启动品质正循环的核心是？',
+        options: [
+            'A. 低价策略',
+            'B. 真实信息展示',
+            'C. 快速响应',
+            'D. 广告投放'
+        ],
+        answer: 'B',
+        explanation: '教材P3：通过真实信息展示实现"有品质"，从而吸引消费者和经纪人'
+    },
+    {
+        id: 36,
+        type: 'judge',
+        question: '区域共治理事务是以平台管理员为主体的治理模式。',
+        answer: false,
+        explanation: '教材P4：区域共治理事务是以店东为主体、责任驱动为导向的新型治理模式'
+    },
+    {
+        id: 37,
+        type: 'single',
+        question: '门店星级评定周期是？',
+        options: [
+            'A. 每月',
+            'B. 每季度',
+            'C. 每半年',
+            'D. 每年'
+        ],
+        answer: 'B',
+        explanation: '教材P5：门店星级每季度结算一次'
+    },
+    {
+        id: 38,
+        type: 'multi',
+        question: '贝壳2024年公示的核心资源分配包括：',
+        options: [
+            'A. 新房商机',
+            'B. 二手商机',
+            'C. 租赁商机',
+            'D. 贝壳币'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P5：公示新房、二手、租赁商机及贝壳币的分配结果'
+    },
+    {
+        id: 39,
+        type: 'single',
+        question: '精英社竞赛的主要评选标准是？',
+        options: [
+            'A. 门店规模',
+            'B. 门店业绩',
+            'C. 客户满意度',
+            'D. 人员数量'
+        ],
+        answer: 'B',
+        explanation: '教材P6：精英社以门店业绩为主要评选标准'
+    },
+    {
+        id: 40,
+        type: 'judge',
+        question: '圣都整装是贝壳的区域整装品牌。',
+        answer: false,
+        explanation: '教材P6：圣都整装是直营家装品牌（全国），被窝整装是区域整装品牌（北京）'
+    },
+    {
+        id: 41,
+        type: 'single',
+        question: '链家首次进入外地市场的方式是？',
+        options: [
+            'A. 自建分公司',
+            'B. 收购当地企业',
+            'C. 与好旺角合作',
+            'D. 加盟模式'
+        ],
+        answer: 'C',
+        explanation: '教材P3：链家2006年通过与好旺角合作进入大连市场'
+    },
+    {
+        id: 42,
+        type: 'multi',
+        question: '链家对经纪人的职业化要求包括：',
+        options: [
+            'A. 严把入口关',
+            'B. 专业能力提升',
+            'C. 有操守',
+            'D. 能评价'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P3：经纪人的职业化需要建立与人相关的一系列标准'
+    },
+    {
+        id: 43,
+        type: 'single',
+        question: '资金托管服务主要解决什么问题？',
+        options: [
+            'A. 房源真实性',
+            'B. 首付款安全',
+            'C. 交易速度',
+            'D. 贷款审批'
+        ],
+        answer: 'B',
+        explanation: '教材P1：推出资金托管服务产品，保障客户的首付款安全'
+    },
+    {
+        id: 44,
+        type: 'judge',
+        question: '链家在2008年金融危机期间保持了人、店规模稳定。',
+        answer: true,
+        explanation: '教材P2：2008年金融危机期间，链家保持住了人、店规模'
+    },
+    {
+        id: 45,
+        type: 'single',
+        question: '2025年赢亲情活动将在哪里举办？',
+        options: [
+            'A. 北京',
+            'B. 上海',
+            'C. 广州',
+            'D. 三亚'
+        ],
+        answer: 'D',
+        explanation: '教材P6：2025年的赢亲情活动将在三亚举行'
+    },
+    {
+        id: 46,
+        type: 'multi',
+        question: '贝壳经纪业务的三大核心业务是？',
+        options: [
+            'A. 二手房买卖',
+            'B. 新房买卖',
+            'C. 房屋租赁',
+            'D. 家居装修'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P4：经纪业务包括二手房买卖、新房买卖及房屋租赁'
+    },
+    {
+        id: 47,
+        type: 'single',
+        question: '链家在线升级为链家网的时间是？',
+        options: [
+            'A. 2011年',
+            'B. 2013年',
+            'C. 2015年',
+            'D. 2017年'
+        ],
+        answer: 'C',
+        explanation: '教材P3：2015年链家在线升级为链家网'
+    },
+    {
+        id: 48,
+        type: 'judge',
+        question: '品效商圈的目标是实现区域内竞争大于合作。',
+        answer: false,
+        explanation: '教材P5：品效商圈让区域内合作远远大于竞争'
+    },
+    {
+        id: 49,
+        type: 'single',
+        question: '链家推行真房源后，商机量变化呈现什么曲线？',
+        options: [
+            'A. 直线上升',
+            'B. 微笑曲线',
+            'C. V型反转',
+            'D. W型波动'
+        ],
+        answer: 'B',
+        explanation: '教材P3：真房源推行后商机量形成"微笑曲线"'
+    },
+    {
+        id: 50,
+        type: 'multi',
+        question: '贝壳整装家居业务涵盖的服务包括？',
+        options: [
+            'A. 整装',
+            'B. 定制',
+            'C. 软装',
+            'D. 家电'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P6：整装家居业务涵盖整装、定制、软装、家电及局部翻新五大服务'
+    },
+    {
+        id: 51,
+        type: 'single',
+        question: '楼盘字典项目的主要目标是？',
+        options: [
+            'A. 提高交易速度',
+            'B. 确保房源信息真实',
+            'C. 降低佣金比例',
+            'D. 扩大门店规模'
+        ],
+        answer: 'B',
+        explanation: '教材P2：为确保房源信息真实，链家开发楼盘字典项目'
+    },
+    {
+        id: 52,
+        type: 'judge',
+        question: '贝壳找房成立于链家成立17周年之际。',
+        answer: true,
+        explanation: '链家2001年成立，贝壳2018年成立，正好相隔17年'
+    },
+    {
+        id: 53,
+        type: 'single',
+        question: '店东直达号的处理原则是？',
+        options: [
+            'A. 选择性回应',
+            'B. 事事有回应',
+            'C. 48小时响应',
+            'D. 仅处理重大投诉'
+        ],
+        answer: 'B',
+        explanation: '教材P5：店东直达号以"事事有回应、件件有跟进"为准则'
+    },
+    {
+        id: 54,
+        type: 'multi',
+        question: '链家对"赢"的理解包括：',
+        options: [
+            'A. 消费者是否喜欢',
+            'B. 能否吸引优秀人才',
+            'C. 个人英雄主义',
+            'D. 共赢而非独赢'
+        ],
+        answer: ['A', 'B', 'D'],
+        explanation: '教材P2：赢的核心是消费者喜欢和吸引人才，本质是共赢'
+    },
+    {
+        id: 55,
+        type: 'single',
+        question: '贝壳平台化发展选择的模式是？',
+        options: [
+            'A. 先横后纵',
+            'B. 先纵后横',
+            'C. 纵横同步',
+            'D. 点面结合'
+        ],
+        answer: 'B',
+        explanation: '教材P3：贝壳选择"先纵后横"的平台化模式'
+    },
+    {
+        id: 56,
+        type: 'judge',
+        question: '链家首次全国化扩张时合并了多家价值观契合的企业。',
+        answer: true,
+        explanation: '教材P3：2015年链家与一批价值观契合的企业进行合并'
+    },
+    {
+        id: 57,
+        type: 'single',
+        question: '真房源行动首先在哪个平台启动？',
+        options: [
+            'A. 链家网',
+            'B. 贝壳找房',
+            'C. 链家在线',
+            'D. 经纪人APP'
+        ],
+        answer: 'C',
+        explanation: '教材P3：链家于2011年从链家在线启动真房源行动'
+    },
+    {
+        id: 58,
+        type: 'multi',
+        question: '品质正循环的三大支柱是？',
+        options: [
+            'A. 物的标准化',
+            'B. 人的职业化',
+            'C. 服务的规范化',
+            'D. 价格的最低化'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P3：品质重塑围绕物的标准化、人的职业化、服务的规范化'
+    },
+    {
+        id: 59,
+        type: 'single',
+        question: '链家处理2008年金融危机的方法是？',
+        options: [
+            'A. 裁员关店',
+            'B. 高管下一线',
+            'C. 提高佣金',
+            'D. 缩减服务'
+        ],
+        answer: 'B',
+        explanation: '教材P2：所有高管到一线带区，帮助开单建立信心'
+    },
+    {
+        id: 60,
+        type: 'judge',
+        question: '贝壳2024年重建了资金安全管理能力。',
+        answer: true,
+        explanation: '教材P5：贝壳2024年重建了新的资金安全管理能力'
+    },
+    {
+        id:61,
+        type: 'single',
+        question: '圣都团装专注的服务对象是？',
+        options: [
+            'A. 二手房业主',
+            'B. 租房客户',
+            'C. 新房用户',
+            'D. 商业客户'
+        ],
+        answer: 'C',
+        explanation: '教材P6：圣都团装专注为新房用户提供全案装修服务'
+    },
+    {
+        id: 62,
+        type: 'multi',
+        question: '推动品质正循环的关键运营方法包括：',
+        options: [
+            'A. 线上线下一体化',
+            'B. ACN合作网络',
+            'C. 数据驱动的管理',
+            'D. 行指管理'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P4：通过线上线下一体化、ACN、数据管理、行指管理实现品质正循环'
+    },
+    {
+        id: 63,
+        type: 'single',
+        question: '链家成立的具体日期是？',
+        options: [
+            'A. 2001年1月1日',
+            'B. 2001年11月12日',
+            'C. 2002年5月15日',
+            'D. 2003年3月20日'
+        ],
+        answer: 'B',
+        explanation: '教材P1：2001年11月12日，链家在北京成立'
+    },
+    {
+        id: 64,
+        type: 'single',
+        question: '贝壳的第一性原理是什么？',
+        options: [
+            'A. 客户至上',
+            'B. 坚持做难而正确的事',
+            'C. 合作共赢',
+            'D. 技术驱动'
+        ],
+        answer: 'B',
+        explanation: '教材P9明确：贝壳的第一性原理是"坚持做难而正确的事"'
+    },
+    {
+        id: 65,
+        type: 'multi',
+        question: '贝壳核心价值观包含哪些？',
+        options: [
+            'A. 客户至上',
+            'B. 诚实可信',
+            'C. 合作共赢',
+            'D. 拼搏进取'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P9：核心价值观包括客户至上、诚实可信、合作共赢、拼搏进取'
+    },
+    {
+        id: 66,
+        type: 'judge',
+        question: '贝壳的愿景是"服务3亿家庭的品质居住平台"。',
+        answer: true,
+        explanation: '教材P9明确记载贝壳愿景'
+    },
+    
+    // 职业道德与合规
+    {
+        id: 67,
+        type: 'single',
+        question: '员工PS修改成销确认单印章属于哪类违规？',
+        options: [
+            'A. 行为不诚信',
+            'B. 侵占公司资产',
+            'C. 泄露机密',
+            'D. 公款私存'
+        ],
+        answer: 'A',
+        explanation: '教材P10案例：PS修改成销确认单构成"行为不诚信"'
+    },
+    {
+        id: 68,
+        type: 'single',
+        question: '向公职人员赠送礼品的价值上限是多少？',
+        options: [
+            'A. 100元',
+            'B. 300元',
+            'C. 500元',
+            'D. 1000元'
+        ],
+        answer: 'B',
+        explanation: '教材P11规定：向公职人员赠送礼品价值须≤300元'
+    },
+    {
+        id: 69,
+        type: 'multi',
+        question: '哪些行为构成一级违规？',
+        options: [
+            'A. 侵占公司资产',
+            'B. 泄露公司机密',
+            'C. 未及时申报利益关系',
+            'D. 被追究刑事责任'
+        ],
+        answer: ['A', 'B', 'D'],
+        explanation: '教材P10-11：侵占资产、泄露机密及被追究刑事责任均属一级违规'
+    },
+    
+    // 格林互助
+    {
+        id: 70,
+        type: 'single',
+        question: '格林互助每月交费金额是多少？',
+        options: [
+            'A. 20元',
+            'B. 40元',
+            'C. 60元',
+            'D. 100元'
+        ],
+        answer: 'B',
+        explanation: '教材P12：格林互助每月交费标准为40元/月'
+    },
+    {
+        id: 71,
+        type: 'judge',
+        question: '格林互助保障对象包括配偶的父母。',
+        answer: true,
+        explanation: '教材P12：保障对象明确包含"父母及配偶的父母"'
+    },
+    
+    // 数据安全
+    {
+        id: 72,
+        type: 'single',
+        question: 'C4级数据的含义是什么？',
+        options: [
+            'A. 完全公开数据',
+            'B. 内部使用数据',
+            'C. 商业秘密',
+            'D. 公司机密'
+        ],
+        answer: 'D',
+        explanation: '教材P13数据分级表：C4级为公司机密数据'
+    },
+    {
+        id: 73,
+        type: 'multi',
+        question: '数据保护要求包括？',
+        options: [
+            'A. C3/C4数据严禁存本地',
+            'B. 跨部门用数据需申请',
+            'C. C2数据可随意传输',
+            'D. 纸质文档直接丢弃'
+        ],
+        answer: ['A', 'B'],
+        explanation: '教材P13规定：C3/C4禁存本地，跨部门用数据需申请流程'
+    },
+    
+    // 新房十不准
+    {
+        id: 74,
+        type: 'single',
+        question: '以下哪项违反"对消费者"十不准？',
+        options: [
+            'A. 提供真实价格信息',
+            'B. 建议加杠杆金融产品',
+            'C. 不收前置佣金',
+            'D. 资金托管'
+        ],
+        answer: 'B',
+        explanation: '教材P14：不准向消费者建议加杠杆金融产品'
+    },
+    {
+        id: 75,
+        type: 'judge',
+        question: '经纪人可私下收取客户前置佣金。',
+        answer: false,
+        explanation: '教材P14：十不准明确规定"不得收取消费者任何形式的前置佣金"'
+    },
+    
+    // 更多题目（完整50道）
+    {
+        id: 76,
+        type: 'single',
+        question: '家贝守护计划中，重大疾病应急借款额度是多少？',
+        options: [
+            'A. 1-5万元',
+            'B. 5-10万元',
+            'C. 10-20万元',
+            'D. 20-30万元'
+        ],
+        answer: 'C',
+        explanation: '教材P12：一次性借款10万~20万元'
+    },
+    {
+        id: 77,
+        type: 'multi',
+        question: '贝壳公益主要项目包括？',
+        options: [
+            'A. 门店便民',
+            'B. 城市社区助老',
+            'C. 乡村教育振兴',
+            'D. 商业投资'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P11：公益矩阵包含门店便民、城市社区、乡村教育振兴'
+    },
+    {
+        id: 78,
+        type: 'judge',
+        question: '七面旗帜中的"技术驱动"最初是"科学管理"。',
+        answer: true,
+        explanation: '教材P10：技术驱动旗帜最初是科学管理'
+    },
+    {
+        id: 79,
+        type: 'single',
+        question: '员工收受合作方购物卡应如何处理？',
+        options: [
+            'A. 自行保留',
+            'B. 2个工作日报备',
+            'C. 转赠他人',
+            'D. 折算现金'
+        ],
+        answer: 'B',
+        explanation: '教材P12：非当面礼品须2个工作日内上交报备'
+    },
+    {
+        id: 80,
+        type: 'multi',
+        question: '哪些行为违反"对开发商"十不准？',
+        options: [
+            'A. 合作五证不全项目',
+            'B. 内导外切客行为',
+            'C. 提供真实销售数据',
+            'D. 拒收开发商礼品'
+        ],
+        answer: ['A', 'B'],
+        explanation: '教材P15：不准合作违规项目，严禁洗客切客行为'
+    },
+    {
+        id: 81,
+        type: 'single',
+        question: '利益关系发生变化需在多少天内申报？',
+        options: [
+            'A. 当日',
+            'B. 3个自然日',
+            'C. 5工作日',
+            'D. 7天'
+        ],
+        answer: 'B',
+        explanation: '教材P13：利益关系变化需知悉后3个自然日内申报'
+    },
+    {
+        id: 82,
+        type: 'judge',
+        question: '公款私存属于二级违规行为。',
+        answer: true,
+        explanation: '教材P11：公款私存明确列为二级违规行为'
+    },
+    {
+        id: 83,
+        type: 'single',
+        question: '宴请公职人员人均标准上限是？',
+        options: [
+            'A. 200元',
+            'B. 350元',
+            'C. 500元',
+            'D. 800元'
+        ],
+        answer: 'B',
+        explanation: '教材P11：宴请公职人员人均花费须≤350元'
+    },
+    // 第21-50题
+    {
+        id: 84,
+        type: 'multi',
+        question: '客户至上的行为准则包括：',
+        options: [
+            'A. 尊重客户及时响应',
+            'B. 履行服务承诺',
+            'C. 优先保证客户利益',
+            'D. 用专业赢得信任'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P9：客户至上五项行为准则'
+    },
+    {
+        id: 85,
+        type: 'single',
+        question: '格林互助累计救助金额已达？',
+        options: [
+            'A. 1亿元',
+            'B. 3.5亿元',
+            'C. 6.7亿元',
+            'D. 10亿元'
+        ],
+        answer: 'C',
+        explanation: '教材P12：截至2025年4月总救助金额超6.7亿元'
+    },
+    {
+        id: 23,
+        type: 'judge',
+        question: '员工可私下存储C4级数据到个人电脑。',
+        answer: false,
+        explanation: '教材P13：C3/C4级数据严禁存放本地设备'
+    },
+    {
+        id: 86,
+        type: 'single',
+        question: '贝壳公益聚焦的核心领域是？',
+        options: [
+            'A. 国际援助',
+            'B. 政治捐助',
+            'C. 社区议题',
+            'D. 商业投资'
+        ],
+        answer: 'C',
+        explanation: '教材P11：贝壳公益聚焦社区议题'
+    },
+    {
+        id: 87,
+        type: 'multi',
+        question: '管理人员责任追究情形包括：',
+        options: [
+            'A. 员工涉嫌犯罪',
+            'B. 发生重大案件',
+            'C. 主动上报案件',
+            'D. 减少公司损失'
+        ],
+        answer: ['A', 'B'],
+        explanation: '教材P11：员工涉罪或重大案件追究管理责任'
+    },
+    {
+        id: 88,
+        type: 'single',
+        question: '子女教育基金最高补助标准是？',
+        options: [
+            'A. 5000元/年',
+            'B. 9000元/年',
+            'C. 15000元/年',
+            'D. 20000元/年'
+        ],
+        answer: 'C',
+        explanation: '教材P12：根据不同就学阶段发放9000~15000元/年'
+    },
+    {
+        id: 89,
+        type: 'judge',
+        question: '七面旗帜中的"社区友好"是贝壳的社会责任。',
+        answer: true,
+        explanation: '教材P10：社区友好既是经营方式也是社会责任'
+    },
+    {
+        id: 90,
+        type: 'single',
+        question: '未申报利益关系但无冲突的处罚等级是？',
+        options: [
+            'A. 一级',
+            'B. 二级',
+            'C. 三级',
+            'D. 四级'
+        ],
+        answer: 'D',
+        explanation: '教材P13：未申报但不构成冲突予以四级违规处罚'
+    },
+    {
+        id: 91,
+        type: 'multi',
+        question: '合作共赢的行为准则要求：',
+        options: [
+            'A. 尊重规则',
+            'B. 换位思考',
+            'C. 荣誉面前退一步',
+            'D. 牺牲短期利益'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P9-10：合作共赢五项行为准则'
+    },
+    {
+        id: 92,
+        type: 'single',
+        question: '数据分类中的"三类"不包括？',
+        options: [
+            'A. 个人信息',
+            'B. 政府数据',
+            'C. 公司管理数据',
+            'D. 业务经营数据'
+        ],
+        answer: 'B',
+        explanation: '教材P13：三类数据为个人信息、公司管理数据、业务经营数据'
+    },
+    {
+        id: 93,
+        type: 'judge',
+        question: '员工可共享系统账号密码。',
+        answer: false,
+        explanation: '教材P13：禁止共享账号，员工对账号行为负责'
+    },
+    {
+        id: 94,
+        type: 'single',
+        question: '格林互助救助人次已超过？',
+        options: [
+            'A. 1万',
+            'B. 2.5万',
+            'C. 4.8万',
+            'D. 6万'
+        ],
+        answer: 'C',
+        explanation: '教材P12：截至2025年4月救助超4.8万人次'
+    },
+    {
+        id: 95,
+        type: 'multi',
+        question: '新房十不准"对公司"禁止：',
+        options: [
+            'A. 接私单',
+            'B. 利用资源不当获利',
+            'C. 瞒报利益关系',
+            'D. 提供真实发票'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P15：不准接私单、不当获利、瞒报利益关系'
+    },
+    {
+        id: 96,
+        type: 'single',
+        question: '泄露客户带看信息属于？',
+        options: [
+            'A. 行为不诚信',
+            'B. 泄露公司机密',
+            'C. 侵占资产',
+            'D. 索贿'
+        ],
+        answer: 'B',
+        explanation: '教材P11案例：倒卖客户信息构成泄露公司机密'
+    },
+    {
+        id: 97,
+        type: 'judge',
+        question: "家贝守护计划覆盖员工'前任配偶'。",
+        answer: false,
+        explanation: '教材P12：仅覆盖员工、子女、配偶'
+    },
+    {
+        id: 98,
+        type: 'single',
+        question: '七面旗帜不包括：',
+        options: [
+            'A. 品质正循环',
+            'B. 服务者主权',
+            'C. 个人英雄主义',
+            'D. 社区友好'
+        ],
+        answer: 'C',
+        explanation: '教材P10：七面旗帜强调"平凡人协作"而非个人英雄主义'
+    },
+    {
+        id: 99,
+        type: 'multi',
+        question: '申报利益关系的情形包括：',
+        options: [
+            'A. 入职申报',
+            'B. 定期申报',
+            'C. 实时申报',
+            'D. 离职申报'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P13：申报分入职、定期、实时三种'
+    },
+    {
+        id: 100,
+        type: 'single',
+        question: '员工伪造成交条件属于违反：',
+        options: [
+            'A. 对经纪人十不准',
+            'B. 对开发商十不准',
+            'C. 对公司十不准',
+            'D. 对消费者十不准'
+        ],
+        answer: 'A',
+        explanation: '教材P14：不准引导经纪人伪造成交条件'
+    },
+    {
+        id: 101,
+        type: 'judge',
+        question: '格林互助保障期内累计救助上限200万元。',
+        answer: true,
+        explanation: '教材P12：会员保障期内累计救助上限200万元'
+    },
+    {
+        id: 102,
+        type: 'single',
+        question: '数据销毁的正确方式是？',
+        options: [
+            'A. 直接丢弃',
+            'B. 碎纸机处理',
+            'C. 转赠他人',
+            'D. 私下留存'
+        ],
+        answer: 'B',
+        explanation: '教材P13：纸质文档必须用碎纸机处理'
+    },
+    {
+        id: 103,
+        type: 'multi',
+        question: '诚实可信的行为准则要求：',
+        options: [
+            'A. 言行一致',
+            'B. 不粉饰成绩',
+            'C. 敬畏规则',
+            'D. 勇于担当'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P9-10：诚实可信五项行为准则'
+    },
+    {
+        id: 104,
+        type: 'single',
+        question: "贝壳公益'我来教您用手机'属于？",
+        options: [
+            'A. 门店便民',
+            'B. 乡村教育',
+            'C. 城市社区助老',
+            'D. 产业振兴'
+        ],
+        answer: 'C',
+        explanation: '教材P11：属于城市社区助老项目'
+    },
+    {
+        id: 105,
+        type: 'judge',
+        question: '员工可私下接受合作方提供的旅游招待。',
+        answer: false,
+        explanation: '教材P12：禁止接受旅游款待等不适度接待'
+    },
+    {
+        id: 106,
+        type: 'single',
+        question: '三级违规的职位晋升限制期是？',
+        options: [
+            'A. 3个月',
+            'B. 6个月',
+            'C. 1年',
+            'D. 2年'
+        ],
+        answer: 'C',
+        explanation: '教材P10表格：三级违规一年内不得晋升'
+    },
+    {
+        id: 107,
+        type: 'multi',
+        question: '家贝守护计划包含：',
+        options: [
+            'A. 重疾应急借款',
+            'B. 子女教育基金',
+            'C. 退休年金',
+            'D. 购房补贴'
+        ],
+        answer: ['A', 'B'],
+        explanation: '教材P12：包含重大疾病应急借款和子女教育基金'
+    },
+    {
+        id: 108,
+        type: 'single',
+        question: '七面旗帜中"信任连接"的本质是？',
+        options: [
+            'A. 利用信息差赚钱',
+            'B. 帮助信息对称',
+            'C. 加速交易流程',
+            'D. 降低服务标准'
+        ],
+        answer: 'B',
+        explanation: '教材P10：帮助客户实现信息对称而非利用信息差'
+    },
+    {
+        id: 109,
+        type: 'judge',
+        question: '新房作业人员可参与零首付项目合作。',
+        answer: false,
+        explanation: '教材P15：严禁合作存在骗贷风险的零低首付项目'
+    },
+    {
+        id: 110,
+        type: 'single',
+        question: '贝好家的核心业务模式是？',
+        options: [
+            'A. 1+2模式',
+            'B. 3C模式',
+            'C. 4P模式',
+            'D. 5S体系'
+        ],
+        answer: 'A',
+        explanation: '教材P9：贝好家采用"1+2业务模式"'
+    },
+    {
+        id: 111,
+        type: 'multi',
+        question: '对外宴请合规要求：',
+        options: [
+            'A. 公司人员必须参加',
+            'B. 禁止娱乐类消费',
+            'C. 可洗浴按摩',
+            'D. 人均无限制'
+        ],
+        answer: ['A', 'B'],
+        explanation: '教材P11：宴请须有公司人员参加且禁止娱乐消费'
+    },
+    {
+        id: 112,
+        type: 'single',
+        question: '格林互助入会需入职满？',
+        options: [
+            'A. 1个月',
+            'B. 3个月',
+            'C. 6个月',
+            'D. 12个月'
+        ],
+        answer: 'C',
+        explanation: '教材P12：需入驻贝壳6个月以上才可加入'
+    },
+    {
+        id: 113,
+        type: 'single',
+        question: '房地产业属于国民经济中的第几产业？',
+        options: [
+            'A. 第一产业',
+            'B. 第二产业',
+            'C. 第三产业',
+            'D. 第四产业'
+        ],
+        answer: 'C',
+        explanation: '教材P18：房地产业是第三产业，涉及房产和地产的交易及相关服务'
+    },
+    {
+        id: 114,
+        type: 'multi',
+        question: '房地产市场按交易客体可分为哪些？',
+        options: [
+            'A. 土地市场',
+            'B. 商品房市场',
+            'C. 增量市场',
+            'D. 存量市场'
+        ],
+        answer: ['A', 'B'],
+        explanation: '教材P18：按交易客体可以分为土地市场（一级市场）和商品房市场'
+    },
+    
+    // 市场发展趋势
+    {
+        id: 115,
+        type: 'judge',
+        question: '2022年起中国房地产市场进入"修复期"阶段。',
+        answer: false,
+        explanation: '教材P19：2022年起定义为"新模式"调整期，是下行周期'
+    },
+    {
+        id: 116,
+        type: 'single',
+        question: '四代住宅的核心特征不包括下列哪项？',
+        options: [
+            'A. 高度智能化',
+            'B. 可持续化',
+            'C. 大面积赠送',
+            'D. 健康化'
+        ],
+        answer: 'C',
+        explanation: '教材P20：四代宅以"绿色、舒适、智慧、个性化"为核心'
+    },
+    
+    // 房地产开发流程
+    {
+        id: 117,
+        type: 'single',
+        question: '商业用地最高出让年限是多少年？',
+        options: [
+            'A. 40年',
+            'B. 50年',
+            'C. 70年',
+            'D. 永久'
+        ],
+        answer: 'A',
+        explanation: '教材P21：商业、旅游、娱乐用地40年'
+    },
+    {
+        id: 118,
+        type: 'multi',
+        question: '房地产开发基本流程包括哪些阶段？',
+        options: [
+            'A. 土地获取',
+            'B. 项目规划',
+            'C. 工程建设',
+            'D. 物业管理'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P21：开发流程含土地获取、规划、建设、销售、物业等环节'
+    },
+    
+    // 销售流程
+    {
+        id: 119,
+        type: 'judge',
+        question: '集中销售方式常见于高端豪宅项目。',
+        answer: false,
+        explanation: '教材P22：集中销售用于刚需盘、热点项目，自然销售用于高端盘'
+    },
+    {
+        id: 120,
+        type: 'single',
+        question: '下列哪项不属于销售执行环节？',
+        options: [
+            'A. 客户接待',
+            'B. 签约回款',
+            'C. 促销活动',
+            'D. 项目策划'
+        ],
+        answer: 'D',
+        explanation: '教材P21-22：项目策划属于销售前期准备'
+    },
+    
+    // 商品房销售
+    {
+        id: 121,
+        type: 'single',
+        question: '准现房销售签订什么类型的合同？',
+        options: [
+            'A. 商品房预售合同',
+            'B. 商品房销售合同',
+            'C. 房屋租赁合同',
+            'D. 购房意向书'
+        ],
+        answer: 'A',
+        explanation: '教材P23：准现房仍属期房范畴，签订《商品房预售合同》'
+    },
+    {
+        id: 122,
+        type: 'multi',
+        question: '商品房预售应具备的"五证"包括哪些？',
+        options: [
+            'A. 国有土地使用证',
+            'B. 建设用地规划许可证',
+            'C. 建设工程规划许可证',
+            'D. 商品房预售许可证'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P24：预售五证为土地使用证、用地规划证、工程规划证、施工许可证、预售许可证'
+    },
+    
+    // 更多题目（完整50道）
+    {
+        id: 123,
+        type: 'judge',
+        question: '现房销售必须提供《商品房销售许可证》。',
+        answer: true,
+        explanation: '教材P24：现房销售需取得《商品房销售许可证》'
+    },
+    {
+        id: 124,
+        type: 'single',
+        question: '下列哪项属于商品房销售禁止行为？',
+        options: [
+            'A. 按备案价销售',
+            'B. 返本销售',
+            'C. 标明房源状态',
+            'D. 现房销售'
+        ],
+        answer: 'B',
+        explanation: '教材P24：禁止返本销售或变相返本销售'
+    },
+    {
+        id: 125,
+        type: 'multi',
+        question: '商品房交付时应提供哪些文件？',
+        options: [
+            'A. 住宅质量保证书',
+            'B. 住宅使用说明书',
+            'C. 装修补贴协议',
+            'D. 物业优惠券'
+        ],
+        answer: ['A', 'B'],
+        explanation: '教材P25：必须提供《住宅质量保证书》和《住宅使用说明书》'
+    },
+    {
+        id: 126,
+        type: 'single',
+        question: '当面积误差比绝对值超过3%时，购房人有权：',
+        options: [
+            'A. 要求退房',
+            'B. 无条件补差价',
+            'C. 要求双倍赔偿',
+            'D. 拒绝收房'
+        ],
+        answer: 'A',
+        explanation: '教材P25：面积误差比绝对值>3%，购房人可以要求解除合同'
+    },
+    {
+        id: 127,
+        type: 'judge',
+        question: '主体结构质量不合格只能选择退房处理。',
+        answer: false,
+        explanation: '教材P25：也可协商换房等处理方式'
+    },
+    {
+        id: 128,
+        type: 'single',
+        question: '住宅用地最高出让年限是多少年？',
+        options: [
+            'A. 40年',
+            'B. 50年',
+            'C. 70年',
+            'D. 永久'
+        ],
+        answer: 'C',
+        explanation: '教材P21：居住用地70年'
+    },
+    {
+        id: 129,
+        type: 'multi',
+        question: '中国房地产发展历程包括哪些阶段？',
+        options: [
+            'A. 萌发期',
+            'B. 调整期',
+            'C. 修复期',
+            'D. 暴涨期'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P19：分为萌发期、调整期、修复期、新模式调整期'
+    },
+    {
+        id: 130,
+        type: 'judge',
+        question: '房屋建设和设施建设属于房地产业范畴。',
+        answer: false,
+        explanation: '教材P18：属于第二产业中的建筑业'
+    },
+    {
+        id: 131,
+        type: 'single',
+        question: '四代住宅价格通常比三代住宅高出多少？',
+        options: [
+            'A. 5%-10%',
+            'B. 15%-30%',
+            'C. 持平',
+            'D. 更低'
+        ],
+        answer: 'B',
+        explanation: '教材P20表格：四代宅价格贵15%~30%'
+    },
+    {
+        id: 132,
+        type: 'multi',
+        question: '项目规划阶段需要办理哪些许可证？',
+        options: [
+            'A. 建设用地规划许可证',
+            'B. 建设工程规划许可证',
+            'C. 建筑工程施工许可证',
+            'D. 商品房预售许可证'
+        ],
+        answer: ['B'],
+        explanation: '教材P21：项目规划阶段办理《建设工程规划许可证》'
+    },
+    {
+        id: 133,
+        type: 'single',
+        question: '自然销售方式多用于哪种项目？',
+        options: [
+            'A. 刚需盘',
+            'B. 高端豪宅',
+            'C. 热点项目',
+            'D. 所有项目'
+        ],
+        answer: 'B',
+        explanation: '教材P22：自然销售多用于高端盘、客储周期短项目'
+    },
+    {
+        id: 134,
+        type: 'judge',
+        question: '现房即买即住，风险最低。',
+        answer: true,
+        explanation: '教材P23表格：现房特点即买即住、风险低'
+    },
+    {
+        id: 135,
+        type: 'single',
+        question: '商品房预售要求投入开发资金达到工程建设总投资的多少？',
+        options: [
+            'A. 10%',
+            'B. 25%',
+            'C. 50%',
+            'D. 100%'
+        ],
+        answer: 'B',
+        explanation: '教材P24：预售要求投入资金达到工程建设总投资的25%以上'
+    },
+    {
+        id: 136,
+        type: 'multi',
+        question: '面积误差处理规则中，由开发商承担费用的情况是：',
+        options: [
+            'A. 误差<3%且实测面积大',
+            'B. 误差>3%且实测面积大部分',
+            'C. 误差<3%且实测面积小',
+            'D. 误差>3%且实测面积小部分'
+        ],
+        answer: ['B'],
+        explanation: '教材P25：实测面积>约定面积且误差>3%部分由开发商承担'
+    },
+    {
+        id: 137,
+        type: 'judge',
+        question: '未取得预售许可证前可以收取购房人意向金。',
+        answer: false,
+        explanation: '教材P24：禁止在取得预售许可前收取定金、预订款等费用'
+    },
+    {
+        id: 138,
+        type: 'single',
+        question: '返本销售的本质是什么？',
+        options: [
+            'A. 促销手段',
+            'B. 融资方式',
+            'C. 让利行为',
+            'D. 非法集资'
+        ],
+        answer: 'B',
+        explanation: '教材P24：返本销售是融资的一种方式'
+    },
+    {
+        id: 139,
+        type: 'multi',
+        question: '客户需求变化趋势包括哪些方面？',
+        options: [
+            'A. 投资转向自住',
+            'B. 重视品质与性价比',
+            'C. 追求线上化体验',
+            'D. 区域分化明显'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P19：需求变化包含结构、观念、层次、方式、区域五方面'
+    },
+    {
+        id: 140,
+        type: 'single',
+        question: '项目竣工验收合格后获取什么文件？',
+        options: [
+            'A. 建设工程施工许可证',
+            'B. 商品房预售许可证',
+            'C. 竣工验收备案表',
+            'D. 建设工程规划许可证'
+        ],
+        answer: 'C',
+        explanation: '教材P21：通过联合验收获取《竣工验收备案表》'
+    },
+    {
+        id: 141,
+        type: 'judge',
+        question: '样板房必须与实际交付房屋完全一致。',
+        answer: false,
+        explanation: '教材P25：应说明实际交付是否与样板房一致'
+    },
+    {
+        id: 142,
+        type: 'single',
+        question: '工业用地最高出让年限是多少年？',
+        options: [
+            'A. 40年',
+            'B. 50年',
+            'C. 70年',
+            'D. 永久'
+        ],
+        answer: 'B',
+        explanation: '教材P21：工业用地50年'
+    },
+    {
+        id: 143,
+        type: 'multi',
+        question: '销售前期准备包括哪些工作？',
+        options: [
+            'A. 项目策划',
+            'B. 销售团队组建',
+            'C. 销售道具准备',
+            'D. 客户签约'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P21：前期准备含策划、团队组建培训、道具准备'
+    },
+    {
+        id: 144,
+        type: 'judge',
+        question: '《住宅项目规范》于2025年5月1日实施。',
+        answer: true,
+        explanation: '教材P20：2025年5月1日实施《住宅项目规范》'
+    },
+    {
+        id: 145,
+        type: 'single',
+        question: '面积误差比的计算公式是什么？',
+        options: [
+            'A. (实测面积-合同面积)/合同面积×100%',
+            'B. (合同面积-实测面积)/实测面积×100%',
+            'C. (实测面积-合同面积)/实测面积×100%',
+            'D. (合同面积-实测面积)/合同面积×100%'
+        ],
+        answer: 'A',
+        explanation: '教材P25：面积误差比=(产权登记面积-合同约定面积)÷合同约定面积×100%'
+    },
+    {
+        id: 146,
+        type: 'multi',
+        question: '禁止售后包租的对象是什么？',
+        options: [
+            'A. 已竣工商品房',
+            'B. 未竣工商品房',
+            'C. 现房',
+            'D. 商铺'
+        ],
+        answer: ['B'],
+        explanation: '教材P24：禁止对未竣工商品房售后包租'
+    },
+    {
+        id: 185,
+        type: 'judge',
+        question: '物业管理是房地产开发流程的必要环节。',
+        answer: true,
+        explanation: '教材P21：开发流程包含物业管理阶段'
+    },
+    {
+        id: 147,
+        type: 'single',
+        question: '下列哪种用地年限最短？',
+        options: [
+            'A. 居住用地',
+            'B. 工业用地',
+            'C. 商业用地',
+            'D. 教育用地'
+        ],
+        answer: 'C',
+        explanation: '教材P21：商业用地40年，工业和教育用地50年，居住用地70年'
+    },
+    {
+        id: 148,
+        type: 'multi',
+        question: '商品房现售应具备的条件包括：',
+        options: [
+            'A. 已通过竣工验收',
+            'B. 拆迁安置已经落实',
+            'C. 配套基础设施具备交付条件',
+            'D. 投入资金达25%以上'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P24：现售条件包括竣工验收、拆迁落实、配套完善等'
+    },
+    {
+        id: 149,
+        type: 'judge',
+        question: '土地使用年限从购房人收房之日起计算。',
+        answer: false,
+        explanation: '教材P21：从开发商向政府取得土地使用权的日期开始计算'
+    },
+    {
+        id: 150,
+        type: 'single',
+        question: '下列哪项不是售后服务的环节？',
+        options: [
+            'A. 交房手续办理',
+            'B. 客户投诉处理',
+            'C. 社区活动组织',
+            'D. 客户接待讲解'
+        ],
+        answer: 'D',
+        explanation: '教材P22：客户接待讲解属于销售执行环节'
+    },
+    {
+        id: 151,
+        type: 'multi',
+        question: '房地产对国民经济的影响包括：',
+        options: [
+            'A. 影响投资和消费',
+            'B. 影响就业',
+            'C. 影响通货膨胀',
+            'D. 拉动上下游产业'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P18：房地产是支柱产业，影响投资、消费、就业、通胀，拉动上下游'
+    },
+    {
+        id: 152,
+        type: 'judge',
+        question: '分割拆零销售商品住宅是允许的销售方式。',
+        answer: false,
+        explanation: '教材P24：禁止分割拆零销售商品住宅'
+    },
+    {
+        id: 153,
+        type: 'single',
+        question: '当实测面积小于合同面积且误差>3%时，开发商应：',
+        options: [
+            'A. 返还误差部分房款',
+            'B. 双倍返还误差部分房款',
+            'C. 不予处理',
+            'D. 免费补足面积'
+        ],
+        answer: 'B',
+        explanation: '教材P25：实测面积<约定面积且误差>3%，开发商双倍返还误差部分房款'
+    },
+    {
+        id: 154,
+        type: 'multi',
+        question: '销售禁止行为包括：',
+        options: [
+            'A. 一房二卖',
+            'B. 返本销售',
+            'C. 售后包租未竣工房',
+            'D. 按备案价销售'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P24：禁止一房二卖、返本销售、售后包租等行为'
+    },
+    {
+        id: 155,
+        type: 'judge',
+        question: '诚意金在开盘后可转为定金。',
+        answer: true,
+        explanation: '教材P24：开盘时诚意金可自动升级为定金'
+    },
+    {
+        id: 156,
+        type: 'single',
+        question: '下列哪项不是四代住宅的竞争力？',
+        options: [
+            'A. 生态+科技符合"双碳"',
+            'B. 维护成本低',
+            'C. 技术体验好',
+            'D. 满足美好居住需求'
+        ],
+        answer: 'B',
+        explanation: '教材P20表格：四代宅劣势是维护成本高'
+    },
+    {
+        id: 157,
+        type: 'multi',
+        question: '工程建设阶段需要：',
+        options: [
+            'A. 建设工程施工许可证',
+            'B. 通过各项专项验收',
+            'C. 办理预售许可证',
+            'D. 获取竣工验收备案表'
+        ],
+        answer: ['A', 'B', 'D'],
+        explanation: '教材P21：工程建设需施工许可证、专项验收和竣工验收备案表'
+    },
+    {
+        id: 158,
+        type: 'judge',
+        question: '捆绑车位销售是合规的促销方式。',
+        answer: false,
+        explanation: '教材P24：禁止捆绑车位等变相价外加价行为'
+    },
+    {
+        id: 159,
+        type: 'single',
+        question: '客户确定购买后首先签订什么文件？',
+        options: [
+            'A. 购房合同',
+            'B. 认购协议',
+            'C. 贷款合同',
+            'D. 交房确认书'
+        ],
+        answer: 'B',
+        explanation: '教材P22：客户确定购买后签订认购书，缴纳定金'
+    },
+    {
+        id: 160,
+        type: 'multi',
+        question: '商品房交付时应满足：',
+        options: [
+            'A. 按期交付',
+            'B. 提供两书',
+            'C. 完成测绘备案',
+            'D. 协助办理产权登记'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P25：交付条件包括按期交付、提供两书、测绘备案、协助办证'
+    },
+    {
+        id: 161,
+        type: 'judge',
+        question: '教育用地的最高出让年限是40年。',
+        answer: false,
+        explanation: '教材P21：教育、科技、文化、卫生、体育用地50年'
+    }
+        ];
+
+        // 当前考试相关数据
+        let currentUser = null;
+        let examQuestions = [];
+        let userAnswers = {};
+        let currentQuestionIndex = 0;
+        let timerInterval = null;
+        let timeLeft = 60 * 60; // 60分钟
+
+        // DOM 元素
+        const loginSection = document.getElementById('loginSection');
+        const examSection = document.getElementById('examSection');
+        const resultSection = document.getElementById('resultSection');
+        const questionArea = document.getElementById('questionArea');
+        const timer = document.getElementById('timer');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const progressBar = document.getElementById('progressBar');
+        const helpModal = document.getElementById('helpModal');
+        const closeHelp = document.getElementById('closeHelp');
+        const showHelpBtn = document.getElementById('showHelpBtn');
+        const copyGuideBtn = document.getElementById('copyGuideBtn');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+
+        // 登录功能
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 简单验证
+            if (username && password) {
+                // 演示用固定账号
+                if (username === 'syh' && password === '123') {
+                    currentUser = {
+                        name: username,
+                        avatar: username.charAt(0).toUpperCase()
+                    };
+                    
+                    // 更新用户信息
+                    userAvatar.textContent = currentUser.avatar;
+                    userName.textContent = currentUser.name;
+                    
+                    // 开始考试
+                    startExam();
+                } else {
+                    alert('用户名或密码错误！请使用演示账号: syh / 123');
+                }
+            } else {
+                alert('请输入用户名和密码');
+            }
+        });
+
+        // 开始考试
+        function startExam() {
+            // 切换界面
+            loginSection.classList.remove('active');
+            examSection.classList.add('active');
+            
+            // 随机生成试卷 (取10题作为演示)
+            examQuestions = generateRandomExam(35);
+            
+            // 初始化用户答案
+            userAnswers = {};
+            
+            // 显示第一题
+            currentQuestionIndex = 0;
+            displayQuestion(currentQuestionIndex);
+            
+            // 更新进度条
+            updateProgressBar();
+            
+            // 开始计时
+            startTimer();
+        }
+
+        // 生成随机试卷
+        function generateRandomExam(num) {
+            // 复制题库
+            const shuffled = [...questionBank];
+            
+            // 随机排序
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            
+            // 取前num题
+            return shuffled.slice(0, num);
+        }
+
+        // 更新进度条
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / examQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // 显示题目
+        function displayQuestion(index) {
+            if (index < 0 || index >= examQuestions.length) return;
+            
+            const question = examQuestions[index];
+            let optionsHtml = '';
+            
+            // 单选题和多选题
+            if (question.type === 'single' || question.type === 'multi') {
+                question.options.forEach((option, i) => {
+                    const optionLetter = option.charAt(0);
+                    const isSelected = userAnswers[question.id] && 
+                                      (question.type === 'single' ? 
+                                       userAnswers[question.id] === optionLetter : 
+                                       userAnswers[question.id].includes(optionLetter));
+                    
+                    optionsHtml += `
+                        <div class="option ${isSelected ? 'selected' : ''}" data-value="${optionLetter}">
+                            <input type="${question.type === 'single' ? 'radio' : 'checkbox'}" 
+                                   name="question_${question.id}" 
+                                   ${isSelected ? 'checked' : ''}
+                                   style="pointer-events: none;">
+                            ${option}
+                        </div>
+                    `;
+                });
+            } 
+            // 判断题
+            else if (question.type === 'judge') {
+                const isTrueSelected = userAnswers[question.id] === true;
+                const isFalseSelected = userAnswers[question.id] === false;
+                
+                optionsHtml += `
+                    <div class="option ${isTrueSelected ? 'selected' : ''}" data-value="true">
+                        <input type="radio" name="question_${question.id}" ${isTrueSelected ? 'checked' : ''} style="pointer-events: none;">
+                        正确
+                    </div>
+                    <div class="option ${isFalseSelected ? 'selected' : ''}" data-value="false">
+                        <input type="radio" name="question_${question.id}" ${isFalseSelected ? 'checked' : ''} style="pointer-events: none;">
+                        错误
+                    </div>
+                `;
+            }
+            
+            const questionHtml = `
+                <div class="question-container">
+                    <div class="question-header">
+                        <div class="question-number">${index + 1}</div>
+                        <div class="question-text">${question.question}</div>
+                    </div>
+                    <div class="options">${optionsHtml}</div>
+                </div>
+                <div class="navigation">
+                    <button class="nav-btn prev-btn" id="prevBtn" ${index === 0 ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-left"></i> 上一题
+                    </button>
+                    <button class="nav-btn next-btn" id="nextBtn">
+                        ${index === examQuestions.length - 1 ? '完成预览' : '下一题'} <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            `;
+            
+            questionArea.innerHTML = questionHtml;
+            
+            // 添加选项选择事件
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectOption(question, this.dataset.value);
+                });
+            });
+            
+            // 添加上一题/下一题事件
+            document.getElementById('prevBtn').addEventListener('click', function() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    displayQuestion(currentQuestionIndex);
+                    updateProgressBar();
+                }
+            });
+            
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                if (currentQuestionIndex < examQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion(currentQuestionIndex);
+                    updateProgressBar();
+                } else {
+                    // 最后一题时显示提交确认
+                    if (confirm('您已完成所有题目，是否提交试卷？')) {
+                        submitExam();
+                    }
+                }
+            });
+        }
+
+        // 选择选项
+        function selectOption(question, value) {
+            if (question.type === 'single') {
+                userAnswers[question.id] = value;
+            } 
+            else if (question.type === 'multi') {
+                if (!userAnswers[question.id]) {
+                    userAnswers[question.id] = [];
+                }
+                
+                if (userAnswers[question.id].includes(value)) {
+                    // 已选中则取消
+                    userAnswers[question.id] = userAnswers[question.id].filter(v => v !== value);
+                } else {
+                    // 未选中则添加
+                    userAnswers[question.id].push(value);
+                }
+            } 
+            else if (question.type === 'judge') {
+                userAnswers[question.id] = value === 'true';
+            }
+            
+            // 重新渲染当前题目
+            displayQuestion(currentQuestionIndex);
+        }
+
+        // 开始计时
+        function startTimer() {
+            clearInterval(timerInterval);
+            
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timer.textContent = `剩余时间: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // 提交试卷
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            if (confirm('确定要提交试卷吗？提交后将无法修改答案。')) {
+                submitExam();
+            }
+        });
+
+        // 提交考试
+        function submitExam() {
+            clearInterval(timerInterval);
+            
+            // 计算分数
+            const result = calculateScore();
+            
+            // 显示结果
+            showResult(result);
+        }
+
+        // 计算分数
+        function calculateScore() {
+            let correctCount = 0;
+            const wrongQuestions = [];
+            
+            examQuestions.forEach(question => {
+                const userAnswer = userAnswers[question.id];
+                let isCorrect = false;
+                
+                if (question.type === 'single') {
+                    isCorrect = userAnswer === question.answer;
+                } 
+                else if (question.type === 'multi') {
+                    // 多选题需要检查答案是否完全匹配
+                    if (Array.isArray(userAnswer)) {
+                        const sortedUser = [...userAnswer].sort().join('');
+                        const sortedAnswer = [...question.answer].sort().join('');
+                        isCorrect = sortedUser === sortedAnswer;
+                    }
+                } 
+                else if (question.type === 'judge') {
+                    isCorrect = userAnswer === question.answer;
+                }
+                
+                if (isCorrect) {
+                    correctCount++;
+                } else {
+                    wrongQuestions.push({
+                        question: question,
+                        userAnswer: userAnswer
+                    });
+                }
+            });
+            
+            const score = Math.round((correctCount / examQuestions.length) * 100);
+            
+            return {
+                total: examQuestions.length,
+                correct: correctCount,
+                wrong: examQuestions.length - correctCount,
+                score: score,
+                wrongQuestions: wrongQuestions
+            };
+        }
+
+        // 显示结果
+        function showResult(result) {
+            examSection.classList.remove('active');
+            resultSection.classList.add('active');
+            
+            // 更新结果数据
+            document.getElementById('scoreValue').textContent = result.score;
+            document.getElementById('totalQuestions').textContent = result.total;
+            document.getElementById('correctCount').textContent = result.correct;
+            document.getElementById('wrongCount').textContent = result.wrong;
+            
+            // 显示错题
+            const wrongQuestionsList = document.getElementById('wrongQuestionsList');
+            wrongQuestionsList.innerHTML = '';
+            
+            result.wrongQuestions.forEach((item, index) => {
+                const question = item.question;
+                const userAnswer = item.userAnswer;
+                
+                let correctAnswer = '';
+                if (question.type === 'single') {
+                    correctAnswer = question.answer;
+                } 
+                else if (question.type === 'multi') {
+                    correctAnswer = question.answer.join(', ');
+                } 
+                else if (question.type === 'judge') {
+                    correctAnswer = question.answer ? '正确' : '错误';
+                }
+                
+                let userAnswerDisplay = '';
+                if (userAnswer === undefined || userAnswer === null) {
+                    userAnswerDisplay = '未作答';
+                } else if (typeof userAnswer === 'boolean') {
+                    userAnswerDisplay = userAnswer ? '正确' : '错误';
+                } else if (Array.isArray(userAnswer)) {
+                    userAnswerDisplay = userAnswer.join(', ');
+                } else {
+                    userAnswerDisplay = userAnswer;
+                }
+                
+                const questionHtml = `
+                    <div class="wrong-question-item">
+                        <div class="question-text">
+                            ${index + 1}. ${question.question}
+                        </div>
+                        <div class="user-answer">
+                            <i class="fas fa-times"></i> 您的答案: ${userAnswerDisplay}
+                        </div>
+                        <div class="correct-answer">
+                            <i class="fas fa-check"></i> 正确答案: ${correctAnswer}
+                        </div>
+                        <div class="explanation">
+                            <strong>解析:</strong> ${question.explanation}
+                        </div>
+                    </div>
+                `;
+                
+                wrongQuestionsList.innerHTML += questionHtml;
+            });
+            
+            // 重新考试按钮
+            document.getElementById('retryBtn').addEventListener('click', function() {
+                // 重置考试数据
+                timeLeft = 60 * 60;
+                resultSection.classList.remove('active');
+                startExam();
+            });
+        }
+        
+        // 使用帮助功能
+        showHelpBtn.addEventListener('click', function() {
+            helpModal.style.display = 'flex';
+        });
+        
+        closeHelp.addEventListener('click', function() {
+            helpModal.style.display = 'none';
+        });
+        
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(event) {
+            if (event.target === helpModal) {
+                helpModal.style.display = 'none';
+            }
+        });
+        
+        // 复制分享指南
+        copyGuideBtn.addEventListener('click', function() {
+            const guideText = `如何打开贝壳新房搏学考试系统：
+            
+1. 保存HTML文件到您的设备（电脑或手机）
+2. 通过以下方式打开：
+   - 电脑：双击HTML文件或在浏览器中打开
+   - 手机：在文件管理器中点击HTML文件，选择用浏览器打开
+3. 使用演示账号登录：
+   用户名: syh
+   密码: 123
+   
+注意：如果打开后页面显示不正常，请尝试使用Chrome、Edge或Safari浏览器。`;
+
+            navigator.clipboard.writeText(guideText)
+                .then(() => {
+                    alert('分享指南已复制到剪贴板！');
+                })
+                .catch(err => {
+                    console.error('复制失败:', err);
+                    alert('复制失败，请手动复制文本');
+                });
+        });
+        
+        // 复制文件分享指南
+        copyLinkBtn.addEventListener('click', function() {
+            const guideText = `请按以下步骤使用贝壳新房搏学考试系统：
+            
+1. 将此HTML文件保存到您的设备
+2. 打开方式：
+   - 电脑：双击文件或在浏览器中打开
+   - 手机：在文件管理器中找到文件并点击，选择用浏览器打开
+3. 登录账号：
+   用户名: syh
+   密码: 123
+   
+如果打开后页面显示不正常，请使用Chrome、Edge或Safari浏览器。`;
+
+            navigator.clipboard.writeText(guideText)
+                .then(() => {
+                    alert('文件分享指南已复制到剪贴板！');
+                })
+                .catch(err => {
+                    console.error('复制失败:', err);
+                    alert('复制失败，请手动复制文本');
+                });
+        });
+
+        // 页面加载时添加用户指引
+        window.addEventListener('DOMContentLoaded', function() {
+            // 添加首次使用提示
+            if (!localStorage.getItem('hasSeenGuide')) {
+                setTimeout(function() {
+                    helpModal.style.display = 'flex';
+                    localStorage.setItem('hasSeenGuide', 'true');
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
