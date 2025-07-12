@@ -699,106 +699,10 @@
         }
         
         /* 分享提示 */
-        .share-guide {
-            background: #e3f2fd;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px auto;
-            max-width: 600px;
-            text-align: center;
-            border-left: 4px solid #1e88e5;
-        }
-        
-        .share-guide h3 {
-            color: #0d47a1;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .share-options {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .share-btn {
-            background: white;
-            border: 2px solid #1e88e5;
-            border-radius: 8px;
-            padding: 10px 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .share-btn:hover {
-            background: #1e88e5;
-            color: white;
-        }
+       
         
         /* 使用帮助 */
-        .help-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .help-content {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-        }
-        
-        .close-help {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #757575;
-        }
-        
-        .help-steps {
-            margin: 20px 0;
-        }
-        
-        .help-step {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            align-items: flex-start;
-        }
-        
-        .step-number {
-            background: #1e88e5;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-weight: bold;
-        }
+  
     </style>
 </head>
 <body>
@@ -823,19 +727,6 @@
         </header>
         
         <div class="content">
-            <!-- 分享指南 -->
-            <div class="share-guide">
-                <h3><i class="fas fa-share-alt"></i> 如何分享此考试系统</h3>
-                <p>将此HTML文件分享给他人后，请确保他们按以下方式打开：</p>
-                <div class="share-options">
-                    <button class="share-btn" id="copyLinkBtn">
-                        <i class="fas fa-copy"></i> 复制文件分享指南
-                    </button>
-                    <button class="share-btn" id="showHelpBtn">
-                        <i class="fas fa-question-circle"></i> 查看使用帮助
-                    </button>
-                </div>
-            </div>
             
             <!-- 登录界面 -->
             <div class="login-section active" id="loginSection">
@@ -953,58 +844,7 @@
         </footer>
     </div>
     
-    <!-- 使用帮助弹窗 -->
-    <div class="help-modal" id="helpModal">
-        <div class="help-content">
-            <span class="close-help" id="closeHelp">&times;</span>
-            <h2><i class="fas fa-question-circle"></i> 使用与分享指南</h2>
-            
-            <div class="help-steps">
-                <div class="help-step">
-                    <div class="step-number">1</div>
-                    <div>
-                        <h3>保存HTML文件</h3>
-                        <p>将此HTML文件保存到您的设备（电脑或手机）</p>
-                    </div>
-                </div>
-                
-                <div class="help-step">
-                    <div class="step-number">2</div>
-                    <div>
-                        <h3>分享文件</h3>
-                        <p>通过以下方式分享给他人：<br>
-                        - 电脑：通过邮件、微信、QQ发送文件<br>
-                        - 手机：通过微信、QQ、钉钉发送文件</p>
-                    </div>
-                </div>
-                
-                <div class="help-step">
-                    <div class="step-number">3</div>
-                    <div>
-                        <h3>打开方式</h3>
-                        <p>接收者需要：<br>
-                        - 电脑：双击HTML文件或在浏览器中打开<br>
-                        - 手机：在文件管理器中点击HTML文件，选择用浏览器打开</p>
-                    </div>
-                </div>
-                
-                <div class="help-step">
-                    <div class="step-number">4</div>
-                    <div>
-                        <h3>使用考试系统</h3>
-                        <p>使用演示账号登录：<br>
-                        <strong>用户名: syh</strong><br>
-                        <strong>密码: 123</strong></p>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="btn" id="copyGuideBtn" style="margin-top: 10px;">
-                <i class="fas fa-copy"></i> 复制分享指南
-            </button>
-        </div>
-    </div>
-
+   
     <script>
         // 题库数据
         const questionBank = [
@@ -2919,12 +2759,7 @@
         const userAvatar = document.getElementById('userAvatar');
         const userName = document.getElementById('userName');
         const progressBar = document.getElementById('progressBar');
-        const helpModal = document.getElementById('helpModal');
-        const closeHelp = document.getElementById('closeHelp');
-        const showHelpBtn = document.getElementById('showHelpBtn');
-        const copyGuideBtn = document.getElementById('copyGuideBtn');
-        const copyLinkBtn = document.getElementById('copyLinkBtn');
-
+       
         // 登录功能
         document.getElementById('loginBtn').addEventListener('click', function() {
             const username = document.getElementById('username').value;
@@ -3269,80 +3104,6 @@
             });
         }
         
-        // 使用帮助功能
-        showHelpBtn.addEventListener('click', function() {
-            helpModal.style.display = 'flex';
-        });
-        
-        closeHelp.addEventListener('click', function() {
-            helpModal.style.display = 'none';
-        });
-        
-        // 点击模态框外部关闭
-        window.addEventListener('click', function(event) {
-            if (event.target === helpModal) {
-                helpModal.style.display = 'none';
-            }
-        });
-        
-        // 复制分享指南
-        copyGuideBtn.addEventListener('click', function() {
-            const guideText = `如何打开贝壳新房搏学考试系统：
-            
-1. 保存HTML文件到您的设备（电脑或手机）
-2. 通过以下方式打开：
-   - 电脑：双击HTML文件或在浏览器中打开
-   - 手机：在文件管理器中点击HTML文件，选择用浏览器打开
-3. 使用演示账号登录：
-   用户名: syh
-   密码: 123
-   
-注意：如果打开后页面显示不正常，请尝试使用Chrome、Edge或Safari浏览器。`;
-
-            navigator.clipboard.writeText(guideText)
-                .then(() => {
-                    alert('分享指南已复制到剪贴板！');
-                })
-                .catch(err => {
-                    console.error('复制失败:', err);
-                    alert('复制失败，请手动复制文本');
-                });
-        });
-        
-        // 复制文件分享指南
-        copyLinkBtn.addEventListener('click', function() {
-            const guideText = `请按以下步骤使用贝壳新房搏学考试系统：
-            
-1. 将此HTML文件保存到您的设备
-2. 打开方式：
-   - 电脑：双击文件或在浏览器中打开
-   - 手机：在文件管理器中找到文件并点击，选择用浏览器打开
-3. 登录账号：
-   用户名: syh
-   密码: 123
-   
-如果打开后页面显示不正常，请使用Chrome、Edge或Safari浏览器。`;
-
-            navigator.clipboard.writeText(guideText)
-                .then(() => {
-                    alert('文件分享指南已复制到剪贴板！');
-                })
-                .catch(err => {
-                    console.error('复制失败:', err);
-                    alert('复制失败，请手动复制文本');
-                });
-        });
-
-        // 页面加载时添加用户指引
-        window.addEventListener('DOMContentLoaded', function() {
-            // 添加首次使用提示
-            if (!localStorage.getItem('hasSeenGuide')) {
-                setTimeout(function() {
-                    helpModal.style.display = 'flex';
-                    localStorage.setItem('hasSeenGuide', 'true');
-                }, 2000);
-            }
-        });
     </script>
 </body>
 </html>
